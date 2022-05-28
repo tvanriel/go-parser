@@ -9,16 +9,19 @@ import(
     lex "github.com/bbuck/go-lexer"
 )
 
-func Parse(tokens []*lex.Token) *parse.AST {
+func Parse(tokens []*lex.Token) (*parse.AST, error) {
 	p := &parse.Parser{
 		Tokens: tokens,
 		Cur:    0,
 		AST:    &parse.AST{},
 	}
-	for p.HasTokens() {
+	for p.Continue() {
 		ParseTextOrDirective(p)
 	}
-	return p.AST
+	if p.Err() != nil {
+		return nil, p.Err()
+	}
+	return p.AST, nil
 }
 
 ```
