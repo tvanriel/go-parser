@@ -17,15 +17,19 @@ type AST struct {
 	Parent      *AST
 }
 
-func (a *AST) Print(i int) {
+func (a *AST) Print(i int) string {
 	if a == nil {
-		return
+		return ""
 	}
-	fmt.Print(strings.Repeat(" ", i))
-	fmt.Println(a.ValueString)
+	var sb strings.Builder
+
+	sb.WriteString(strings.Repeat(" ", i))
+	sb.WriteString(a.ValueString)
+	sb.WriteString("\n")
 	for _, child := range a.Children {
-		child.Print(i + 1)
+		sb.WriteString(child.Print(i + 4))
 	}
+	return sb.String()
 
 }
 
@@ -70,5 +74,5 @@ func (p *Parser) AddChild(ast *AST) {
 }
 
 func (p *Parser) Dump() {
-	p.AST.Print(0)
+	fmt.Print(p.AST.Print(0))
 }
