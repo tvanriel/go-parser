@@ -2,6 +2,8 @@ package goparser
 
 import (
 	"errors"
+	"fmt"
+	"strings"
 
 	lex "github.com/bbuck/go-lexer"
 )
@@ -13,6 +15,18 @@ type AST struct {
 	ValueType   NodeType
 	ValueString string
 	Parent      *AST
+}
+
+func (a *AST) Print(i int) {
+	if a == nil {
+		return
+	}
+	fmt.Print(strings.Repeat(" ", i))
+	fmt.Println(a.ValueString)
+	for _, child := range a.Children {
+		child.Print(i + 1)
+	}
+
 }
 
 type Parser struct {
@@ -55,4 +69,6 @@ func (p *Parser) AddChild(ast *AST) {
 	p.AST.Children = append(p.AST.Children, ast)
 }
 
-type ParseFunc func(*Parser) ParseFunc
+func (p *Parser) Dump() {
+	p.AST.Print(0)
+}
