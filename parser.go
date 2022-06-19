@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	lex "github.com/bbuck/go-lexer"
+	lex "github.com/tvanriel/go-lexer"
 )
 
 type NodeType int
